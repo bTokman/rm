@@ -1,16 +1,15 @@
 import moment from 'moment';
-import store from '@/store';
+
 /**
  * Get HighChart config
- * @param series
+ * @param from
+ * @param to
  * @returns {*}
  */
 export const buildLineChartConfig =
   (from, to) => {
-    console.log(from);
-    console.log(to);
     return {
-      chartType: 'plot',
+      chartType: 'areaspline',
       animationDuration: 1000,
       updateArgs: [true, true, {duration: 1000}],
       chartOptions: {
@@ -19,7 +18,7 @@ export const buildLineChartConfig =
           margin: [0, 0, 21, 0],
           zoomType: 'x'
         },
-        title: false,
+        title: 'Day',
         xAxis: {
           crosshair: true,
           type: 'datetime',
@@ -29,8 +28,7 @@ export const buildLineChartConfig =
           labels: {
             y: 15,
             formatter() {
-              console.log(this.value);
-              return moment.utc(this.value).format('MMM DD')
+              return moment.utc(this.value).format('HH:mm')
             }
           }
         },
@@ -75,25 +73,17 @@ export const buildLineChartConfig =
           },
           stickyTracking: false
         },
-        series: [{
-          name: 'AAPL Stock Price',
-          data: [5,5,56,67,8],
-          type: 'area',
-          threshold: null,
-          tooltip: {
-            valueDecimals: 2
-          }
-        },
+        series: [
           {
-            name: 'AAPL Stock Price',
-            data: [6,7,8,232,54],
-            type: 'area',
-            threshold: null,
-            tooltip: {
-              valueDecimals: 2
-            }
-          }
-
+            colorIndex: 1,
+            name: 'Yesterday',
+            data: from,
+          },
+          {
+            colorIndex: 0,
+            name: 'Today',
+            data: to,
+          },
         ],
 
       }

@@ -48,8 +48,6 @@
         },
         methods: {
             login() {
-                this.infoError = false;
-
                 const token = createAuthToken(this.username, this.password);
 
                 Vue.http.interceptors.push(function (request, next) {

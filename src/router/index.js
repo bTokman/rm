@@ -1,10 +1,9 @@
-import Vue from 'vue';
 import Router from 'vue-router';
 import Login from '@/components/login';
 import Groups from '@/components/groups';
 import Charts from '@/components/charts';
 
-Vue.use(Router);
+
 
 export default new Router({
     mode: 'history',
@@ -20,7 +19,7 @@ export default new Router({
             component: Groups,
         },
         {
-            path: '/chart',
+            path: '/chart/:id',
             name: 'charts',
             component: Charts,
         }

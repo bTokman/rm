@@ -11,14 +11,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "chart.js": "^2.7.3",
-    "chartjs": "^0.3.24",
-    "hchs-vue-charts": "^1.2.8",
     "highcharts": "^6.1.4",
     "highcharts-vue": "^1.2.0",
     "moment": "^2.22.2",
     "vue": "^2.5.2",
-    "vue-chartjs": "^3.4.0",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
