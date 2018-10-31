@@ -1,1 +1,335 @@
-* {font-family: Arial}
+html,body {
+    font-family: Arial, sans-serif;
+}
+
+
+/* --------------------- INDEX ----------------------- */
+
+
+.login__box {
+    background: #fff;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 100px;
+    position: relative;
+}
+
+.login__box .form__row {
+    width: 100%;
+    margin-top: 60px;
+}
+
+.login__box #login__button {
+    height: 45px;
+    background: #458cc9;
+    cursor: pointer;
+    outline: 0;
+    margin: 0 auto;
+    display: block;
+    color: #fff;
+    margin-top: 45px;
+    text-transform: uppercase;
+    width: 100%;
+    font-size: 18px;
+}
+
+.login__box input {
+    border: 2px solid #458cc9;
+    height: 30px;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    display: block;
+    text-align: center;
+    outline: 0;
+}
+
+.login__box .login__head_box {
+    background: #458cc9;
+    color: #fff;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 18px;
+    padding-left: 35px;
+    height: 40px;
+    line-height: 40px;
+    width: 45%;
+}
+
+.info--error {
+    text-align: left;
+    top: 0px;
+    background: #e24a4a;
+    color: #fff;
+    text-transform: uppercase;
+    position: absolute;
+    padding-left: 35px;
+    height: 40px;
+    line-height: 40px;
+    width: 45%;
+}
+
+.logo__box > img {
+    position: absolute;
+    width: 35px;
+    right: 15px;
+    top: 5px;
+}
+
+@media (min-width: 1000px) {
+    .login__box {
+        width: 450px;
+        margin-top: 10%;
+    }
+}
+
+
+
+/* --------------------- GROUPS ----------------------- */
+
+
+.item_title {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    color: #fff;
+    background: rgba(69, 140, 201, 1);
+    border: 1px solid #fff;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s;
+}
+
+.active {
+    background: rgb(42, 98, 146);
+}
+
+.V-accordion {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    overflow: hidden;
+}
+
+.V-accordion + .V-accordion {
+    border-top: 0;
+}
+
+.V-accordion_trigger {
+    cursor: pointer;
+    transition: all 0.4s;
+}
+
+.V-accordion_body {
+    line-height: 25px;
+    padding: 10px 15px 10px 15px;
+    background: #f1f1f1;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #fff;
+    box-sizing: border-box;
+    border-bottom: 2px solid #fff;
+    display: flex;
+    justify-content: space-between;
+}
+
+.V-accordion_body > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.accordion-enter-active {
+    -webkit-animation: accordion 0.3s forwards;
+    animation: accordion 0.3s forwards;
+}
+
+.accordion-leave-active {
+    animation: accordion 0s 0s reverse;
+}
+
+.item__count {
+    background: #fff;
+    padding: 0 10px 0 10px;
+    float: right;
+    line-height: 50px;
+    width: 105px;
+    height: 50px;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.item__name {
+    width: 45%;
+    overflow: hidden;
+    word-wrap: break-word;
+    display: flex;
+    align-items: center;
+}
+
+.search__wrapper {
+    width: 100%;
+    height: 50px;
+    background: #fff;
+    position: fixed;
+    z-index: 1;
+}
+
+.search__wrapper input {
+    width: 60%;
+    height: 40px;
+    margin-top: 5px;
+    margin-left: 5%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: 0;
+    font-size: 14px;
+    border: 2px solid #efefef;
+    padding: 0px 10px 0px 10px;
+}
+
+.ac_weapper {
+    position: relative;
+    top: 70px;
+    z-index: 15;
+}
+
+@-webkit-keyframes accordion {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(100%);
+        transform: translateY(100%);
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@keyframes accordion {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(100%);
+        transform: translateY(100%);
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+/* --------------------- SLICES  ----------------------- */
+
+.slices__wrapper .slice_title {
+    text-transform: uppercase;
+    margin-top: 25px;
+    margin-left: 5%;
+    width: 80%;
+    border-bottom: 3px solid #458cc9;
+    padding-bottom: 5px;
+}
+
+.slices__wrapper .item__wrapper {
+    width: 35%;
+    height: 65px;
+    margin-left: 20px;
+    position:relative;
+    background: #458cc9;
+    padding: 0px 10px 0px 10px;
+    color: #fff;
+    margin-top: 25px;
+}
+
+.slices__wrapper .sub__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.slices__wrapper .item_count {
+    background: #fff;
+    color: #000;
+    width: 100%;
+    height: 15px;
+    text-align: center;
+    padding: 5px 0px 5px 0px;
+}
+
+.slices__wrapper .sub_title {
+    height: 15px;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 10px;
+    margin-top: 5px;;
+}
+
+
+/* --------------------- CHARTS ----------------------- */
+
+
+.charts_wrapper .metric_title {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background: #fff;
+    position: relative;
+}
+
+.charts_wrapper .toolbar {
+    display: flex;
+    justify-content: space-around;
+    height: 50px;
+    align-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background: rgba(69, 140, 201, 1);
+    border-bottom: 2px solid rgba(69, 140, 201, 1);
+}
+
+.charts_wrapper .toolbar > div {
+    text-transform: uppercase;
+    font-size: 14px;
+    padding: 5px 15px 5px 15px;
+    color: #fff;
+}
+
+.charts_wrapper .toolbar > .active {
+    border: 2px solid #fff;
+}
+
+.charts_wrapper .back {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12.5px 21.7px 12.5px 0;
+    border-color: transparent #458cc9 transparent transparent;
+    top: 12px;
+    left: 20px;
+}
+
+.charts_wrapper > .item_count {
+    position: absolute;
+    right: 15px;
+    height: 30px;
+    background: #efefef;
+    padding-left: 15px;
+    padding-right: 15px;
+    line-height: 30px;
+    top: 10px;
+}
+
+.charts_wrapper .item_title {
+    width: 45%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 70px;
+}
