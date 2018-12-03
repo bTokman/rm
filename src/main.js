@@ -7,6 +7,8 @@ import HighchartsVue from 'highcharts-vue'
 import store from './store';
 import {apiPath, configureAuthHeaders} from './lib/helpers';
 
+import '../static/styles.css'
+
 /**
  *  Init plugins
  */

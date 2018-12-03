@@ -15,7 +15,7 @@ export const createAuthToken = (username, password) => {
  * Api urk
  * @type {string}
  */
-export const apiPath = 'https://realmetric.mailfire.io';
+export const apiPath = 'https://realmetric2.mailfire.io';
 
 /**
  * Configure basic http authorization headers
@@ -60,17 +60,64 @@ export function quantize5minPerDay(period = {}) {
 export function buildForOneDay(data) {
   const today = moment().format('YYYY-MM-DD');
   const formattedData = quantize5minPerDay(data);
-  const timestampedData =
-    Object.keys(formattedData).map(minute => ( [
-      moment.utc(today, 'YYYY-MM-DD').startOf('day').add(minute, 'minute').valueOf(),
-      formattedData[minute]
-    ] ));
-
-  return timestampedData;
+  return Object.keys(formattedData).map(minute => ( [
+    moment.utc(today, 'YYYY-MM-DD').startOf('day').add(minute, 'minute').valueOf(),
+    formattedData[minute]
+  ] ));
 }
 
 /**
+ * Format data to one week period
  *
+ * @param data
+ * @returns {*[][]}
+ */
+export function buildForOneWeek(data) {
+  return Object.keys(data)
+    .sort((a, b) =>
+      moment.utc(a, 'YYYY-MM-DD').valueOf() - moment.utc(b, 'YYYY-MM-DD').valueOf()
+    )
+    .map(date => [date, data[date]])
+}
+
+/**
+ * Format data for one month period
+ *
+ * @param data
+ * @param unsigned
+ * @returns {number[]}
+ */
+export function buildForOneMonth(data, unsigned = false) {
+  return Object.keys(data)
+    .sort((a, b) =>
+      moment.utc(a, 'YYYY-MM-DD').valueOf() - moment.utc(b, 'YYYY-MM-DD').valueOf()
+    )
+    .map(date => unsigned ? -data[date] : data[date])
+}
+
+/**
+ * Get data for quarterly
+ *
+ * @param data
+ * @returns {any[]}
+ */
+export function buildForOneQuarterly(data) {
+  let months = {};
+
+  for (let key in data) {
+    if (!data.hasOwnProperty(key)) continue;
+
+    let date = new Date(key);
+    let month = date.getMonth() + 1;
+
+    months[month] = months[month] ? months[month] + data[key] : data[key];
+  }
+
+  return Object.values(months);
+}
+
+
+/**
  * @param metrics
  * @param id
  * @returns {boolean}
@@ -83,4 +130,20 @@ export function findMetricNameByMetricId(metrics, id) {
       }
     });
   });
+}
+
+
+export function abbreviateNumber(number) {
+  const SI_SYMBOL = ["", "k", "M", "G", "T", "P", "E"];
+
+  let tier = Math.log10(number) / 3 | 0;
+
+  if (tier == 0) return number;
+
+  let suffix = SI_SYMBOL[tier];
+  let scale = Math.pow(10, tier * 3);
+
+  let scaled = number / scale;
+
+  return scaled.toFixed(1) + suffix;
 }
