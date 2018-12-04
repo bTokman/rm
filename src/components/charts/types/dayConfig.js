@@ -91,14 +91,17 @@ export const buildDayChartConfig =
           name: 'Yesterday',
           data: from,
           className: 'yesterday',
-          animation: {duration: 500}
+          animation: {duration: 500},
+
         },
         {
           colorIndex: 0,
           name: 'Today',
           className: 'today',
           data: to,
-          animation: {duration: 500}
+          animation: {duration: 500},
+          color : '#1976d2',
+          fillOpacity: 0.5
         },
       ],
     };

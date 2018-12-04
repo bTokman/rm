@@ -45,12 +45,12 @@ export const buildQuarterlyChartConfig =
           if (this.points[1]) {
             str += `<table><tr><td><span style="color:#434348">●</span> ${moment().subtract(5 - this.points[0].key, 'month').startOf('month').format('YYYY-MM')}:</td>
                 <td style="padding:0"><b>${this.points[0].y.toLocaleString()} </b></td></tr></table>
-                <table><tr><td><span style="color:#7cb5ec">●</span> ${moment().subtract(2 - this.points[1].key, 'month').startOf('month').format('YYYY-MM')}: </td>
+                <table><tr><td><span style="color:#1976d2">●</span> ${moment().subtract(2 - this.points[1].key, 'month').startOf('month').format('YYYY-MM')}: </td>
                 <td style="padding:0"><b>${this.points[1].y.toLocaleString()} </b></td></tr></table>`;
           }
 
           else {
-            str += `<table><tr><td><span style="color:#434348">●</span> ${this.points[0].key}:</td>
+            str += `<table><tr><td><span style="color:#434348">●</span> ${moment().subtract(2 - this.points[0].key, 'month').startOf('month').format('YYYY-MM')}:</td>
                 <td style="padding:0"><b>${this.points[0].y.toLocaleString()} </b></td></tr></table> `;
           }
 
@@ -76,6 +76,7 @@ export const buildQuarterlyChartConfig =
         animation: {duration: 500}
       }, {
         colorIndex: 0,
+        color: '#1976d2',
         name: 'Current',
         data: to,
         animation: {duration: 500}

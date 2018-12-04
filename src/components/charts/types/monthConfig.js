@@ -78,7 +78,7 @@ export const buildMonthChartConfig =
           if (this.points[1]) {
             str += `<table><tr><td><span style="color:#434348">●</span> ${moment().subtract(1, 'month').date(this.points[0].key).format('YYYY-MM-DD')}:</td>
                 <td style="padding:0"><b>${ (this.points[0].y * -1).toLocaleString()} </b></td></tr></table>
-                <table><tr><td><span style="color:#7cb5ec">●</span> ${moment().date(this.points[1].key).format('YYYY-MM-DD')}: </td>
+                <table><tr><td><span style="color:#1976d2">●</span> ${moment().date(this.points[1].key).format('YYYY-MM-DD')}: </td>
                 <td style="padding:0"><b>${this.points[1].y.toLocaleString()} </b></td></tr></table>`;
           }
 
@@ -98,6 +98,7 @@ export const buildMonthChartConfig =
         animation: {duration: 500}
       }, {
         colorIndex: 0,
+        color: '#1976d2',
         name: 'Current',
         data: to,
         animation: {duration: 500}

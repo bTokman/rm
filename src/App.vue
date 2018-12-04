@@ -12,7 +12,6 @@ export default {
 
 <style>
   body {
-    background: #efefef;
     padding: 0;
     margin: 0;
   }

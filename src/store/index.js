@@ -1,7 +1,19 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import {buildForOneDay, buildForOneWeek, buildForOneMonth, buildForOneQuarterly} from "../lib/helpers";
-import moment from "moment";
+import {buildForOneDay, buildForOneWeek, buildForOneMonth, buildForOneQuarterly} from '../lib/helpers';
+import {
+  current,
+  currentMonday,
+  firstDayOfCurrentMonth,
+  previousSunday,
+  previousMonday,
+  firstDayOfPrevMonth,
+  firstDayOfPrevQuarterly,
+  firstDayOfCurrentQuarterly,
+  lastDayOfPrevMonth,
+  lastDayOfPrevQuarterly
+} from '../lib/dates';
+import moment from 'moment';
 
 Vue.use(Vuex);
 
@@ -70,29 +82,6 @@ const actions = {
   },
 
   async getMetricData({commit}, params) {
-    const current = moment().format('YYYY-MM-DD HH:mm:ss');
-
-    /** FROM (WEEK) **/
-    const previousMonday = moment().startOf('isoweek').subtract(1, 'week').format('YYYY-MM-DD HH:mm:ss');
-    const previousSunday = moment().endOf('isoweek').subtract(1, 'week').format('YYYY-MM-DD HH:mm:ss');
-
-    /** TO (WEEK) **/
-    const currentMonday = moment().startOf('isoweek').format('YYYY-MM-DD HH:mm:ss');
-
-    /** FROM (MONTH) **/
-    const firstDayOfPrevMonth = moment().startOf('month').subtract(1, 'month').format('YYYY-MM-DD HH:mm:ss');
-    const lastDayOfPrevMonth = moment().endOf('month').subtract(1, 'month').format('YYYY-MM-DD HH:mm:ss');
-
-    /** TO (MONTH) **/
-    const firstDayOfCurrentMonth = moment().startOf('month').format('YYYY-MM-DD HH:mm:ss');
-
-    /** FROM (QUARTERLY) **/
-    const firstDayOfPrevQuarterly = moment().startOf('month').subtract(5, 'month').format('YYYY-MM-DD HH:mm:ss');
-    const lastDayOfPrevQuarterly = moment().endOf('month').subtract(3, 'month').format('YYYY-MM-DD HH:mm:ss');
-
-    /** TO(QUARTERLY)  **/
-    const firstDayOfCurrentQuarterly = moment().startOf('month').subtract(2, 'month').format('YYYY-MM-DD HH:mm:ss');
-
     /** Get day data **/
     await Vue.http.get(`values/minutes?metric_id=${params.id}`).then((response) => {
       commit('START_DAY_METRIC', buildForOneDay(response.body.values.prev[Object.keys(response.body.values.prev)[0]]));
@@ -129,29 +118,6 @@ const actions = {
     })
   },
   async getMetricSlice({commit}, params) {
-    const current = moment().format('YYYY-MM-DD HH:mm:ss');
-
-    /** FROM (WEEK) **/
-    const previousMonday = moment().startOf('isoweek').subtract(1, 'week').format('YYYY-MM-DD HH:mm:ss');
-    const previousSunday = moment().endOf('isoweek').subtract(1, 'week').format('YYYY-MM-DD HH:mm:ss');
-
-    /** TO (WEEK) **/
-    const currentMonday = moment().startOf('isoweek').format('YYYY-MM-DD HH:mm:ss');
-
-    /** FROM (MONTH) **/
-    const firstDayOfPrevMonth = moment().startOf('month').subtract(1, 'month').format('YYYY-MM-DD HH:mm:ss');
-    const lastDayOfPrevMonth = moment().endOf('month').subtract(1, 'month').format('YYYY-MM-DD HH:mm:ss');
-
-    /** TO (MONTH) **/
-    const firstDayOfCurrentMonth = moment().startOf('month').format('YYYY-MM-DD HH:mm:ss');
-
-    /** FROM (QUARTERLY) **/
-    const firstDayOfPrevQuarterly = moment().startOf('month').subtract(5, 'month').format('YYYY-MM-DD HH:mm:ss');
-    const lastDayOfPrevQuarterly = moment().endOf('month').subtract(3, 'month').format('YYYY-MM-DD HH:mm:ss');
-
-    /** TO(QUARTERLY)  **/
-    const firstDayOfCurrentQuarterly = moment().startOf('month').subtract(2, 'month').format('YYYY-MM-DD HH:mm:ss');
-
     await Vue.http.get(`values/minutes?metric_id=${params.metricId}&slice_id=${params.sliceId}`).then((response) => {
       commit('START_DAY_METRIC', buildForOneDay(response.body.values.prev[Object.keys(response.body.values.prev)[0]]));
       commit('END_DAY_METRIC', buildForOneDay(response.body.values.curr[Object.keys(response.body.values.curr)[0]]))
@@ -176,7 +142,6 @@ const actions = {
     });
   }
 };
-
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',

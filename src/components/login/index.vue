@@ -27,43 +27,46 @@
 </template>
 
 <script>
-    import Vue from 'vue';
-    import router from '@/router';
-    import store from '@/store';
-    import {apiPath, createAuthToken} from '@/lib/helpers'
+  import Vue from 'vue';
+  import router from '@/router';
+  import store from '@/store';
+  import {apiPath, createAuthToken} from '@/lib/helpers'
 
-    export default {
-        name: 'index',
-        data() {
-            return {
-                infoError: false,
-                username: '',
-                password: '',
-            }
-        },
-        beforeCreate() {
-            if (store.state.isLogged) {
-                router.push('/');
-            }
-        },
-        methods: {
-            login() {
-                const token = createAuthToken(this.username, this.password);
+  export default {
+    name: 'index',
+    data() {
+      return {
+        infoError: false,
+        username: '',
+        password: '',
+      }
+    },
+    beforeCreate() {
+      /** If user loggined redirect to main page **/
+      if (store.state.isLogged) {
+        router.push('/');
+      }
+    },
+    methods: {
+      login() {
+        const token = createAuthToken(this.username, this.password);
 
-                Vue.http.interceptors.push(function (request, next) {
-                    request.headers.set('Authorization', `Basic ${token}`);
-                    next()
-                });
+        /** Set global basic auth headers **/
+        Vue.http.interceptors.push(function (request, next) {
+          request.headers.set('Authorization', `Basic ${token}`);
+          next()
+        });
 
-                this.$http.get('slices').then((response) => {
-                    localStorage.setItem('token', token);
-                    store.commit('LOGIN_USER');
-                    router.push('/');
-                }, () => {
-                    this.infoError = true;
-                    this.password = '';
-                });
-            }
-        }
+        /** Load slices set auth token to local storage  **/
+        this.$http.get('slices').then((response) => {
+          localStorage.setItem('token', token);
+          store.commit('LOGIN_USER');
+          router.push('/');
+        }, () => {
+          this.infoError = true;
+          this.password = '';
+        });
+      }
     }
+  }
 </script>

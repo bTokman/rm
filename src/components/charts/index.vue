@@ -1,20 +1,19 @@
 <template>
     <div class="charts_wrapper">
+
         <div class="metric_title">
             <div v-on:click="goBack()" class="back"></div>
             <div class="item_title">{{metric}}</div>
             <div class="item_count">{{totalCount}}</div>
         </div>
 
-
-        <div class="" v-for="(tab, index) in tabs" v-bind:class="{ active: index == activeTab }">
+        <div class="chart__item" v-for="(tab, index) in tabs" v-bind:class="{ active: index == activeTab }">
             <highcharts class="chart" :options="getOptions(index)"></highcharts>
         </div>
 
         <slices></slices>
 
     </div>
-
 </template>
 
 <script>
@@ -77,6 +76,7 @@
     },
 
     methods: {
+      /** Get highchart options by index **/
       getOptions(index) {
         switch (index) {
           case 0 :
@@ -91,22 +91,27 @@
             return this.dayChartOptions;
         }
       },
-      switchTab(index) {
-        this.$router.push({query: {tab: index}});
-        this.activeTab = index;
-      },
+      /** Go to home page **/
       goBack() {
         store.dispatch('clearMetric');
 
         this.$router.push('/');
       },
-      async fillData() {
+
+      /** Get data from server  **/
+      async fillData(withRedraw = true) {
         await store.dispatch("getMetricData", {id: this.$route.params.id});
 
-        this.redraw();
+        this.redraw(withRedraw);
       },
 
-      redraw() {
+      /**
+       * Redraw hightchart
+       * @param withAnimation
+       */
+      redraw(withAnimation = true) {
+        this.swichAnimation(withAnimation);
+
         /** DAY **/
         this.dayChartOptions.series[0].data = Object.values(this.$store.state.startDayMetricData);
         this.dayChartOptions.series[1].data = Object.values(this.$store.state.endDayMetricData);
@@ -122,11 +127,58 @@
         /** QUARTERLY **/
         this.quarterlyChartOptions.series[0].data = Object.values(this.$store.state.startQuarterlyMetricData);
         this.quarterlyChartOptions.series[1].data = Object.values(this.$store.state.endQuarterlyMetricData);
+
+      },
+
+      /**
+       * Turn on/off chart animation
+       * @param status
+       */
+      swichAnimation(status = true) {
+        /** DAY **/
+        this.dayChartOptions.series[0].animation = status;
+        this.dayChartOptions.series[1].animation = status;
+
+        /** WEEK **/
+        this.weekChartOptions.series[0].animation = status;
+        this.weekChartOptions.series[1].animation = status;
+
+        /** MONTH **/
+        this.monthChartOptions.series[0].animation = status;
+        this.monthChartOptions.series[1].animation = status;
+
+        /** QUARTERLY **/
+        this.quarterlyChartOptions.series[0].animation = status;
+        this.quarterlyChartOptions.series[1].animation = status;
+      },
+
+      /** Show chart loading **/
+      showLoading() {
+        this.$children[0].chart.showLoading();
+        this.$children[1].chart.showLoading();
+        this.$children[2].chart.showLoading();
+        this.$children[3].chart.showLoading();
+      },
+      /** Hide chart loading **/
+      hideLoading() {
+        this.$children[0].chart.hideLoading();
+        this.$children[1].chart.hideLoading();
+        this.$children[2].chart.hideLoading();
+        this.$children[3].chart.hideLoading();
       }
     },
 
+    /**
+     * Listen global events from another components
+     */
     mounted: function () {
       this.$root.$on('chartRedraw', () => this.redraw());
-    }
+
+      /** Periodically fetch data from server **/
+      setInterval(function () {
+        this.fillData(false);
+        this.redraw(false);
+      }.bind(this), 30000);
+    },
   }
 </script>

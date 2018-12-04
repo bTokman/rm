@@ -61,7 +61,7 @@ export const buildWeekChartConfig =
           if (this.points[1]) {
             str += `<table><tr><td><span style="color:#434348">●</span> ${this.points[0].key}:</td>
                 <td style="padding:0"><b>${this.points[0].y.toLocaleString()} </b></td></tr></table>
-                <table><tr><td><span style="color:#7cb5ec">●</span> ${this.points[1].key}: </td>
+                <table><tr><td><span style="color:#1976d2">●</span> ${this.points[1].key}: </td>
                 <td style="padding:0"><b>${this.points[1].y.toLocaleString()} </b></td></tr></table>`;
           }
 
@@ -87,6 +87,7 @@ export const buildWeekChartConfig =
       }, {
         colorIndex: 0,
         name: 'Current',
+        color : '#1976d2',
         data: to,
         animation: {duration: 500},
       }]

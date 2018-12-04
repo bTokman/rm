@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="float" @click="toggleWrapper()">
+        <div class="float" @click="showWrapper()">
             Slices
         </div>
 
@@ -12,26 +12,28 @@
 
         </div>
 
+        <div @click="hideWrapper()" class="slice__header">
+            <div class="arrow"></div>
+        </div>
         <div class="slices__wrapper">
-            <div @click="reToggleWrapper()" class="slice__header">
-                <div class="arrow"></div>
-            </div>
-            <div v-for="(slice,index) in this.slices">
-                <div class="slice_title"
-                     v-bind:class="{ active: open === index }"
-                     @click="toggle(index)">
-                    {{index}}
-                    <span class="slice_count">{{slice.length}}</span>
-                </div>
-                <div class="sub__wrapper" v-show="open === index">
-                    <div class="item__wrapper"
-                         v-bind:class="{ active: selected === data.name }"
-                         @click="toggleSlice(data.name, data.id, data, index)"
-                         v-for="data in slice">
-                        <div class="sub_title">
-                            {{data.name}}
+            <div class="slices__list">
+                <div v-for="(slice,index) in this.slices">
+                    <div class="slice_title"
+                         v-bind:class="{ active: open === index }"
+                         @click="toggle(index)">
+                        {{index}}
+                        <span class="slice_count">{{slice.length}}</span>
+                    </div>
+                    <div class="sub__wrapper" v-show="open === index">
+                        <div class="sub_menu_wrapper"
+                             v-bind:class="{ active: selected === data.name }"
+                             @click="toggleSlice(data.name, data.id, data, index)"
+                             v-for="data in slice">
+                            <div>
+                                <div class="item__name"> {{data.name}}</div>
+                                <div class="item__count">{{data.total}}</div>
+                            </div>
                         </div>
-                        <div class="item_count">{{data.total}}</div>
                     </div>
                 </div>
             </div>
@@ -50,25 +52,43 @@
         selectedItems: []
       }
     },
+    /** Download slice by rout param **/
     async beforeCreate() {
       await this.$store.dispatch('getSlices', {id: this.$route.params.id});
 
       this.slices = this.$store.state.slices;
     },
     methods: {
+      /** Toggle slice dropdown **/
       toggle(index) {
         this.open = this.open === index ? false : index;
         this.selected = false;
       },
 
-      toggleWrapper(e) {
-        document.getElementsByClassName('slices__wrapper')[0].classList.add('active');
+      /** Show slices wrapper **/
+      showWrapper(e) {
+
+        let wrapper = document.getElementsByClassName('slices__wrapper')[0];
+        let header = document.getElementsByClassName('slice__header')[0];
+
+        if (wrapper.classList.contains('active')) {
+          return this.hideWrapper();
+        }
+
+        wrapper.classList.add('active');
+        header.classList.add('active');
       },
 
-      reToggleWrapper() {
-        document.getElementsByClassName('slices__wrapper')[0].classList.remove('active');
+      /** Hide slices wrapper **/
+      hideWrapper() {
+        let wrapper = document.getElementsByClassName('slices__wrapper')[0];
+        let header = document.getElementsByClassName('slice__header')[0];
+
+        wrapper.classList.remove('active');
+        header.classList.remove('active');
       },
 
+      /** Reset all selected items **/
       async resetSelected() {
         await this.$store.dispatch("getMetricData", {id: this.$route.params.id});
         this.selectedItems = [];
@@ -77,6 +97,7 @@
         this.$root.$emit('chartRedraw');
       },
 
+      /** Toggle specific slice and dowload data from server **/
       async toggleSlice(name, id, item, parentItem) {
         let curValue = this.selected;
 
@@ -93,6 +114,7 @@
           this.selectedItems = [];
         }
 
+        /** Send event to redraw charts **/
         this.$root.$emit('chartRedraw');
       }
     }
