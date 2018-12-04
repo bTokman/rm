@@ -52,7 +52,6 @@
             link: '?tab=4'
           },
         ],
-        activeTab: this.$route.query.tab ? this.$route.query.tab : 0,
         interval: false,
       };
     },
