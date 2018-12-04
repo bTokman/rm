@@ -1,21 +1,37 @@
 <template>
     <div>
-        <div class="float" @click="showWrapper()">
+        <div class="selected_items_wrapper">
+            <transition name="list">
+                <div class="item" v-for="item in selectedItems">
+                    <div class="slices_item__title">{{item.parent}} - {{item.name}}</div>
+                    <div class="slices_item__count">{{item.total}}</div>
+                    <div @click="resetSelected()" class="close__item">
+                        <svg viewPort="0 0 12 12" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <line x1="1" y1="11"
+                                  x2="11" y2="1"
+                                  stroke="white"
+                                  stroke-width="2"/>
+                            <line x1="1" y1="1"
+                                  x2="11" y2="11"
+                                  stroke="white"
+                                  stroke-width="2"/>
+                        </svg>
+                    </div>
+                </div>
+            </transition>
+
+        </div>
+        <div class="float" @click="toggleWrapper()">
             Slices
         </div>
         <div class="non_clicked_wrapper">
-            <div class="selected_items_wrapper">
-                <div class="item" @click="resetSelected()" v-for="item in selectedItems">
-                    <div class="slices_item__title">{{item.parent}} - {{item.name}}</div>
-                    <div class="slices_item__count">{{item.total}}</div>
-                </div>
 
-            </div>
 
-            <div v-touch:swipe.left="hideWrapper" @click="hideWrapper()" class="slice__header">
+            <div v-touch:swipe.left="toggleWrapper" @click="toggleWrapper()" class="slice__header">
                 <div class="arrow"></div>
             </div>
-            <div v-touch:swipe.left="hideWrapper" class="slices__wrapper">
+            <div v-touch:swipe.left="toggleWrapper" class="slices__wrapper">
                 <div class="slices__list">
                     <div v-for="(slice,index) in this.slices">
                         <div class="slice_title"
@@ -67,18 +83,13 @@
         this.selected = false;
       },
 
-      /** Show slices wrapper **/
-      showWrapper() {
+      /** Show/Hide slices wrapper **/
+      toggleWrapper() {
         let mainWrapper = document.getElementsByClassName('non_clicked_wrapper')[0];
-        mainWrapper.classList.add('active');
+        mainWrapper.classList.contains('active') ?
+          mainWrapper.classList.remove('active') :
+          mainWrapper.classList.add('active');
       },
-
-      /** Hide slices wrapper **/
-      hideWrapper() {
-        let mainWrapper = document.getElementsByClassName('non_clicked_wrapper')[0];
-        mainWrapper.classList.remove('active');
-      },
-
 
       /** Reset all selected items **/
       async resetSelected() {
@@ -95,12 +106,14 @@
 
         this.selectedItems = [];
 
-        this.selectedItems.push({name: item.name, total: item.total, parent: parentItem})
+        setTimeout(function () {
+          this.selectedItems.push({name: item.name, total: item.total, parent: parentItem})
+        }.bind(this), 1000);
 
         this.selected = this.selected === name ? false : name;
 
         setTimeout(function () {
-          this.hideWrapper();
+          this.toggleWrapper();
         }.bind(this), 500);
 
 

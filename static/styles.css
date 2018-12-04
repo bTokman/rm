@@ -263,7 +263,7 @@ html, body {
 .slices__wrapper {
     background: #2f7ccf;
     position: fixed;
-    z-index: 27;
+    z-index: 37;
     width: 70%;
     height: 100%;
     overflow-y: scroll;
@@ -332,7 +332,7 @@ html, body {
 /* --------------------- CHARTS ----------------------- */
 
 .charts_wrapper {
-    padding-top: 75px;
+    padding-top: 85px;
     background: #fff;
 }
 
@@ -471,7 +471,7 @@ html, body {
     font-weight: bold;
     text-transform: uppercase;
     font-size: 12px;
-    z-index: 25;
+    z-index: 35;
 }
 
 .arrow {
@@ -491,26 +491,22 @@ html, body {
     margin-top: 10px;
 }
 
-
-
 .selected_items_wrapper {
     position: fixed;
-    bottom: 20px;
-    left: 15px;
-    width: 70%;
+    top: 51px;
+    width: 100%;
+    left: 0;
 }
 
 .item {
     display: flex;
-    background: rgba(25, 118, 210, .8);
-    border: 3px solid #fff;
-    padding-left: 25px;
-    padding-right: 25px;
+    background: rgba(25, 118, 210, .6);
     padding-top: 10px;
     padding-bottom: 10px;
-    border-radius: 25px;
     color: #fff;
-    max-width: 70%;
+    width: 100%;
+    padding-left: 25px;
+    position: relative;
 }
 
 .slices_item__count {
@@ -523,6 +519,7 @@ html, body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .slices__list .item__name {
     width: 35%;
 }
@@ -547,4 +544,21 @@ html, body {
 .non_clicked_wrapper.active {
     opacity: 1;
     transform: matrix(1, 0, 0, 1, 0, 0);
+}
+
+.close__item > svg {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    fill: #fff;
+    right: 40px;
+    top: 11px;
+}
+
+.list-enter-active, .list-leave-active {
+    transition: all .5s;
+}
+
+.list-enter, .list-leave-to {
+    opacity: 0;
 }
