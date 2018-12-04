@@ -53,6 +53,7 @@
           },
         ],
         activeTab: this.$route.query.tab ? this.$route.query.tab : 0,
+        interval: false,
       };
     },
     components: {Slices},
@@ -99,11 +100,15 @@
       },
 
       /** Get data from server  **/
-      async fillData(withRedraw = true) {
-        await store.dispatch("getMetricData", {id: this.$route.params.id});
+      async fillData(withRedraw = true, sliceId = false) {
+
+        sliceId ?
+          await store.dispatch('getMetricSlice', {metricId: this.$route.params.id, sliceId: sliceId}) :
+          await store.dispatch("getMetricData", {id: this.$route.params.id});
 
         this.redraw(withRedraw);
       },
+
 
       /**
        * Redraw hightchart
@@ -165,6 +170,14 @@
         this.$children[1].chart.hideLoading();
         this.$children[2].chart.hideLoading();
         this.$children[3].chart.hideLoading();
+      },
+      /** Periodically fetch data from server **/
+      setInterval(sliceId = false) {
+        clearInterval(this.interval);
+
+        this.interval = setInterval(function () {
+          this.fillData(false, sliceId);
+        }.bind(this), 50000);
       }
     },
 
@@ -172,13 +185,15 @@
      * Listen global events from another components
      */
     mounted: function () {
-      this.$root.$on('chartRedraw', () => this.redraw());
+      const _this = this;
 
-      /** Periodically fetch data from server **/
-      setInterval(function () {
-        this.fillData(false);
-        this.redraw(false);
-      }.bind(this), 30000);
+      this.$root.$on('chartRedraw', (props) => {
+        props === undefined ? _this.setInterval() : _this.setInterval(props.sliceId);
+
+        this.redraw();
+      });
+
+      _this.setInterval();
     },
   }
 </script>

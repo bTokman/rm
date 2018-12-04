@@ -66,8 +66,7 @@
       },
 
       /** Show slices wrapper **/
-      showWrapper(e) {
-
+      showWrapper() {
         let wrapper = document.getElementsByClassName('slices__wrapper')[0];
         let header = document.getElementsByClassName('slice__header')[0];
 
@@ -115,7 +114,7 @@
         }
 
         /** Send event to redraw charts **/
-        this.$root.$emit('chartRedraw');
+        this.$root.$emit('chartRedraw', {metricId: this.$route.params.id, sliceId: id});
       }
     }
   }
