@@ -3,41 +3,43 @@
         <div class="float" @click="showWrapper()">
             Slices
         </div>
+        <div class="non_clicked_wrapper">
+            <div class="selected_items_wrapper">
+                <div class="item" @click="resetSelected()" v-for="item in selectedItems">
+                    <div class="slices_item__title">{{item.parent}} - {{item.name}}</div>
+                    <div class="slices_item__count">{{item.total}}</div>
+                </div>
 
-        <div class="selected_items_wrapper">
-            <div class="item" @click="resetSelected()" v-for="item in selectedItems">
-                <div class="slices_item__title">{{item.parent}} - {{item.name}}</div>
-                <div class="slices_item__count">{{item.total}}</div>
             </div>
 
-        </div>
-
-        <div @click="hideWrapper()" class="slice__header">
-            <div class="arrow"></div>
-        </div>
-        <div class="slices__wrapper">
-            <div class="slices__list">
-                <div v-for="(slice,index) in this.slices">
-                    <div class="slice_title"
-                         v-bind:class="{ active: open === index }"
-                         @click="toggle(index)">
-                        {{index}}
-                        <span class="slice_count">{{slice.length}}</span>
-                    </div>
-                    <div class="sub__wrapper" v-show="open === index">
-                        <div class="sub_menu_wrapper"
-                             v-bind:class="{ active: selected === data.name }"
-                             @click="toggleSlice(data.name, data.id, data, index)"
-                             v-for="data in slice">
-                            <div>
-                                <div class="item__name"> {{data.name}}</div>
-                                <div class="item__count">{{data.total}}</div>
+            <div v-touch:swipe.left="hideWrapper" @click="hideWrapper()" class="slice__header">
+                <div class="arrow"></div>
+            </div>
+            <div v-touch:swipe.left="hideWrapper" class="slices__wrapper">
+                <div class="slices__list">
+                    <div v-for="(slice,index) in this.slices">
+                        <div class="slice_title"
+                             v-bind:class="{ active: open === index }"
+                             @click="toggle(index)">
+                            {{index}}
+                            <span class="slice_count">{{slice.length}}</span>
+                        </div>
+                        <div class="sub__wrapper" v-show="open === index">
+                            <div class="sub_menu_wrapper"
+                                 v-bind:class="{ active: selected === data.name }"
+                                 @click="toggleSlice(data.name, data.id, data, index)"
+                                 v-for="data in slice">
+                                <div>
+                                    <div class="item__name"> {{data.name}}</div>
+                                    <div class="item__count">{{data.total}}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -49,7 +51,7 @@
         slices: [],
         open: false,
         selected: false,
-        selectedItems: []
+        selectedItems: [],
       }
     },
     /** Download slice by rout param **/
@@ -67,25 +69,16 @@
 
       /** Show slices wrapper **/
       showWrapper() {
-        let wrapper = document.getElementsByClassName('slices__wrapper')[0];
-        let header = document.getElementsByClassName('slice__header')[0];
-
-        if (wrapper.classList.contains('active')) {
-          return this.hideWrapper();
-        }
-
-        wrapper.classList.add('active');
-        header.classList.add('active');
+        let mainWrapper = document.getElementsByClassName('non_clicked_wrapper')[0];
+        mainWrapper.classList.add('active');
       },
 
       /** Hide slices wrapper **/
       hideWrapper() {
-        let wrapper = document.getElementsByClassName('slices__wrapper')[0];
-        let header = document.getElementsByClassName('slice__header')[0];
-
-        wrapper.classList.remove('active');
-        header.classList.remove('active');
+        let mainWrapper = document.getElementsByClassName('non_clicked_wrapper')[0];
+        mainWrapper.classList.remove('active');
       },
+
 
       /** Reset all selected items **/
       async resetSelected() {
@@ -105,6 +98,11 @@
         this.selectedItems.push({name: item.name, total: item.total, parent: parentItem})
 
         this.selected = this.selected === name ? false : name;
+
+        setTimeout(function () {
+          this.hideWrapper();
+        }.bind(this), 500);
+
 
         if (curValue !== name) {
           await this.$store.dispatch('getMetricSlice', {metricId: this.$route.params.id, sliceId: id});

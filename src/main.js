@@ -5,6 +5,7 @@ import App from './App';
 import router from './router';
 import HighchartsVue from 'highcharts-vue'
 import store from './store';
+import Vue2TouchEvents from 'vue2-touch-events'
 import {apiPath, configureAuthHeaders} from './lib/helpers';
 
 import '../static/styles.css'
@@ -15,6 +16,7 @@ import '../static/styles.css'
 Vue.use(VueResource);
 Vue.use(HighchartsVue);
 Vue.use(Router);
+Vue.use(Vue2TouchEvents);
 
 /**
  * Set global api path

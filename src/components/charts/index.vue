@@ -7,7 +7,7 @@
             <div class="item_count">{{totalCount}}</div>
         </div>
 
-        <div class="chart__item" v-for="(tab, index) in tabs" v-bind:class="{ active: index == activeTab }">
+        <div class="chart__item" v-for="(tab, index) in tabs">
             <highcharts class="chart" :options="getOptions(index)"></highcharts>
         </div>
 
@@ -188,8 +188,8 @@
 
       this.$root.$on('chartRedraw', (props) => {
         props === undefined ? _this.setInterval() : _this.setInterval(props.sliceId);
+        _this.redraw();
 
-        this.redraw();
       });
 
       _this.setInterval();
