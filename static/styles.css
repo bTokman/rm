@@ -139,7 +139,8 @@ html, body {
 .sub_menu_wrapper {
     line-height: 25px;
     padding: 5px 15px 5px 15px;
-    background: #f1f1f1;
+    background: #327ece;
+    color: #fff;
     border-left: 2px solid #fff;
     border-right: 2px solid #fff;
     box-sizing: border-box;
@@ -151,7 +152,7 @@ html, body {
 }
 
 .sub_menu_wrapper.active {
-    background: rgba(25, 118, 210, 0.8) !important;
+    background: #23384ccc !important;
 }
 
 .accordion_body > div {
@@ -193,8 +194,14 @@ html, body {
     width: 45%;
     overflow: hidden;
     word-wrap: break-word;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    text-transform: uppercase;
+    font-size: 13px;
 }
 
 .search__wrapper {
@@ -274,7 +281,7 @@ html, body {
     position: fixed;
     z-index: 37;
     width: 70%;
-    height: 100%;
+    height: calc(100% - 45px);
     overflow-y: scroll;
     top: 45px;
 }
