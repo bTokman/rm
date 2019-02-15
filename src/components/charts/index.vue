@@ -60,8 +60,11 @@
     created() {
       this.fillData();
     },
-
     async beforeCreate() {
+      if (!this.$store.state.isLogged) {
+        return this.$router.push('/login');
+      }
+
       await this.$store.dispatch('getMetrics');
 
       const _this = this;

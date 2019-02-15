@@ -33,7 +33,11 @@
       if (!this.$store.state.metrics.length) {
         await this.$store.dispatch('getMetrics');
       }
-
+    },
+    beforeCreate() {
+      if (!this.$store.state.isLogged) {
+        return this.$router.push('/login');
+      }
     },
     methods: {
       /** Remove from metric name some words **/
