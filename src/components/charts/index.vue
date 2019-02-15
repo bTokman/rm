@@ -53,6 +53,7 @@
           },
         ],
         interval: false,
+        parentMetricName: null
       };
     },
     components: {Slices},
@@ -65,14 +66,16 @@
 
       const _this = this;
 
-      Object.values(this.$store.state.metrics).forEach((item) => {
-        Object.values(item).forEach((insideItem) => {
-          if (insideItem.id === parseInt(_this.$route.params.id)) {
-            _this.metric = insideItem.name;
-            _this.totalCount = insideItem.total;
+      for (const [key, value] of Object.entries(this.$store.state.metrics)) {
+        for (const [insideKey, insideValue] of Object.entries(value)) {
+          if (insideValue.id === parseInt(_this.$route.params.id)) {
+            _this.metric = insideValue.name;
+            _this.totalCount = insideValue.total;
+            _this.parentMetricName = key;
           }
-        });
-      });
+        }
+      }
+
     },
 
     methods: {
@@ -93,9 +96,11 @@
       },
       /** Go to home page **/
       goBack() {
+        clearInterval(this.interval);
+
         store.dispatch('clearMetric');
 
-        this.$router.push('/');
+        this.$router.push({name: 'subgroup', params: {name: this.parentMetricName}})
       },
 
       /** Get data from server  **/

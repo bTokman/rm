@@ -2,6 +2,7 @@ import Router from 'vue-router';
 import Login from '@/components/login';
 import Groups from '@/components/groups';
 import Charts from '@/components/charts';
+import SubGroup from '@/components/subgroup';
 
 export default new Router({
   scrollBehavior() {
@@ -23,6 +24,12 @@ export default new Router({
       path: '/chart/:id',
       name: 'charts',
       component: Charts,
+    },
+    {
+      path: '/subgroup/:name',
+      name : 'subgroup',
+      component: SubGroup
     }
+
   ],
 });
